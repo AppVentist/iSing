@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    x:Class="iSing.Views.CategoriesPage"
+                    x:DataType="vm:CategoriesViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <Grid RowDefinitions="Auto,*">
+
+            <!-- Liederbuch-Filter: fest über der Liste, bleibt beim Scrollen sichtbar. -->
+            <CollectionView Grid.Row="0"
+                            ItemsSource="{Binding BookFilters}"
+                            SelectedItem="{Binding SelectedBookFilter, Mode=TwoWay}"
+                            SelectionMode="Single"
+                            IsVisible="{Binding ShowBookFilter}"
+                            HeightRequest="56"
+                            HorizontalScrollBarVisibility="Never">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.Header>
+                    <BoxView WidthRequest="12" Color="Transparent" />
+                </CollectionView.Header>
+                <CollectionView.Footer>
+                    <BoxView WidthRequest="12" Color="Transparent" />
+                </CollectionView.Footer>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:CategoryBookFilter">
+                        <!-- Grid als Template-Root: nur hier greift der Selected-State, von dort per TargetName auf Chip/ChipLabel. -->
+                        <Grid Padding="0,10">
+                            <Border x:Name="Chip"
+                                    Padding="14,6"
+                                    StrokeThickness="0"
+                                    StrokeShape="RoundRectangle 16"
+                                    BackgroundColor="{AppThemeBinding Light=#EEF2F7, Dark=#2A3140}">
+                                <Label x:Name="ChipLabel"
+                                       Text="{Binding Label}"
+                                       FontSize="14"
+                                       VerticalOptions="Center"
+                                       TextColor="{AppThemeBinding Light=#1F2937, Dark=#E5E7EB}" />
+                            </Border>
+
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup Name="CommonStates">
+                                    <VisualState Name="Normal" />
+                                    <VisualState Name="Selected">
+                                        <VisualState.Setters>
+                                            <Setter TargetName="Chip" Property="Border.BackgroundColor" Value="{StaticResource Brand}" />
+                                            <Setter TargetName="ChipLabel" Property="Label.TextColor" Value="White" />
+                                        </VisualState.Setters>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ScrollView Grid.Row="1">
+                <VerticalStackLayout Padding="20" Spacing="22">
+
+                    <!-- Äußere Ebene: je Liederbuch ein Abschnitt, darunter dessen eigene Kategorien. -->
+                    <VerticalStackLayout Spacing="22" BindableLayout.ItemsSource="{Binding Groups}">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="vm:CategoryGroup">
+                                <VerticalStackLayout Spacing="12">
+                                    <Label Text="{Binding BookLabel}" Style="{StaticResource SectionLabel}" />
+                                    <VerticalStackLayout Spacing="12" BindableLayout.ItemsSource="{Binding Categories}">
+                                        <BindableLayout.ItemTemplate>
+                                            <DataTemplate x:DataType="vm:CategoryItem">
+                                                <Button Text="{Binding Caption}"
+                                                        CommandParameter="{Binding .}"
+                                                        Command="{Binding ViewModel.OpenCategoryCommand,
+                                                                          Source={RelativeSource AncestorType={x:Type views:CategoriesPage}}}" />
+                                            </DataTemplate>
+                                        </BindableLayout.ItemTemplate>
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+
+                    <Label Text="Für die geladenen Liederbücher sind keine Kategorien hinterlegt."
+                           IsVisible="{Binding HasNoCategories}"
+                           Style="{StaticResource SmallLabel}" />
+
+                </VerticalStackLayout>
+            </ScrollView>
+
+        </Grid>
+
+    </views:PageStateView>
+
+</views:PageViewBase>

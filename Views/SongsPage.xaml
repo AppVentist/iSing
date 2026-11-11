@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    xmlns:models="clr-namespace:iSing.Models"
+                    x:Class="iSing.Views.SongsPage"
+                    x:DataType="vm:SongsViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <Grid Padding="16,6" RowDefinitions="Auto,Auto,Auto,*" RowSpacing="10">
+
+            <SearchBar Grid.Row="0"
+                       Placeholder="Nummer oder Titel …"
+                       Text="{Binding Query, Mode=TwoWay}" />
+
+            <!-- Liederbuchfilter: waagerechte Auswahl, sichtbar sobald die Liste mehr als ein Buch enthält -->
+            <CollectionView Grid.Row="1"
+                            IsVisible="{Binding HasBookFilter}"
+                            HeightRequest="46"
+                            ItemsSource="{Binding BookFilters}"
+                            SelectionMode="Single"
+                            SelectedItem="{Binding SelectedBookFilter, Mode=TwoWay}">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:BookFilterItem">
+                        <Border Style="{StaticResource FilterChipBorder}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroupList>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal">
+                                            <VisualState.Setters>
+                                                <Setter Property="StrokeThickness" Value="0" />
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{AppThemeBinding Light={StaticResource CardBackgroundLight}, Dark={StaticResource CardBackgroundDark}}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                        <VisualState x:Name="Selected">
+                                            <VisualState.Setters>
+                                                <Setter Property="StrokeThickness" Value="2" />
+                                                <Setter Property="BackgroundColor"
+                                                        Value="{AppThemeBinding Light={StaticResource BadgeBackgroundLight}, Dark={StaticResource BadgeBackgroundDark}}" />
+                                            </VisualState.Setters>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                </VisualStateGroupList>
+                            </VisualStateManager.VisualStateGroups>
+                            <Label Text="{Binding Name}" Style="{StaticResource ChipLabel}" />
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <Label Grid.Row="2" Text="{Binding ResultSummary}" Style="{StaticResource CaptionLabel}" HorizontalOptions="Center" />
+
+            <CollectionView Grid.Row="3"
+                ItemsSource="{Binding Songs}"
+                SelectionMode="Single"
+                SelectedItem="{Binding SelectedSong, Mode=TwoWay}"
+                SelectionChangedCommand="{Binding OpenSongCommand}"
+                SelectionChangedCommandParameter="{Binding SelectedSong}">
+                <CollectionView.EmptyView>
+                    <Grid VerticalOptions="Fill" HorizontalOptions="Fill">
+                        <Label Text="{Binding EmptyMessage}"
+                            Style="{StaticResource CaptionLabel}"
+                            FontSize="15"
+                            HorizontalOptions="Center"
+                            VerticalOptions="Center"
+                            HorizontalTextAlignment="Center" />
+                    </Grid>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:Song">
+                        <Border Style="{StaticResource ListCardBorder}">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <VerticalStackLayout Grid.Column="0" Spacing="7">
+                                    <Border Style="{StaticResource BadgeBorder}">
+                                        <Label Text="{Binding BookLabel}" Style="{StaticResource BadgeLabel}" />
+                                    </Border>
+                                    <Label Text="{Binding Title}" Style="{StaticResource ListTitleLabel}" />
+                                    <Label Text="{Binding Caption}" Style="{StaticResource CaptionLabel}" />
+                                </VerticalStackLayout>
+                                <!-- X rechts oben: entfernt das Lied aus "Letzte Lieder" -->
+                                <Button Grid.Column="1"
+                                        Text="✕"
+                                        Style="{StaticResource RemoveItemButton}"
+                                        IsVisible="{Binding ViewModel.CanRemoveRecent,
+                                                            Source={RelativeSource AncestorType={x:Type views:SongsPage}}}"
+                                        Command="{Binding ViewModel.RemoveRecentCommand,
+                                                          Source={RelativeSource AncestorType={x:Type views:SongsPage}}}"
+                                        CommandParameter="{Binding .}"
+                                        SemanticProperties.Description="Aus letzten Liedern entfernen" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </Grid>
+
+    </views:PageStateView>
+
+</views:PageViewBase>

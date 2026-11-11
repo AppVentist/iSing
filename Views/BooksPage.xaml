@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    x:Class="iSing.Views.BooksPage"
+                    x:DataType="vm:BooksViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <CollectionView Margin="20,14"
+                        ItemsSource="{Binding Books}"
+                        SelectionMode="Single"
+                        SelectedItem="{Binding SelectedBook, Mode=TwoWay}"
+                        SelectionChangedCommand="{Binding OpenBookCommand}"
+                        SelectionChangedCommandParameter="{Binding SelectedBook}"
+                        EmptyView="Es ist kein Liederbuch hinterlegt.">
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="vm:BookListItem">
+                    <Border Style="{StaticResource ListCardBorder}">
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
+                            <VerticalStackLayout Grid.Column="0" Spacing="6">
+                                <Label Text="{Binding Label}" Style="{StaticResource CardTitleLabel}" />
+                                <Label Text="{Binding Caption}" Style="{StaticResource SmallLabel}" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1" Text="›" Style="{StaticResource ChevronLabel}" VerticalOptions="Center" />
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+    </views:PageStateView>
+
+</views:PageViewBase>

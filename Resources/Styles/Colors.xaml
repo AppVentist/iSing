@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml">
+
+    <!-- Farben der App. Hell-/Dunkelvarianten werden in Styles.xaml per AppThemeBinding kombiniert. -->
+    <Color x:Key="Brand">#2467A0</Color>
+
+    <Color x:Key="PageBackgroundLight">#F3F8FB</Color>
+    <Color x:Key="PageBackgroundDark">#142433</Color>
+
+    <Color x:Key="CardBackgroundLight">#FFFFFF</Color>
+    <Color x:Key="CardBackgroundDark">#213749</Color>
+
+    <Color x:Key="TextColorLight">#182D43</Color>
+    <Color x:Key="TextColorDark">#ECF3FA</Color>
+
+    <Color x:Key="BadgeBackgroundLight">#E5F0F8</Color>
+    <Color x:Key="BadgeBackgroundDark">#304E65</Color>
+
+    <Color x:Key="HeroOverlay">#440E2B42</Color>
+    <Color x:Key="White">#FFFFFF</Color>
+
+</ResourceDictionary>

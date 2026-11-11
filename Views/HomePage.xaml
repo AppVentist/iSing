@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    x:Class="iSing.Views.HomePage"
+                    x:DataType="vm:HomeViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="14">
+
+                <Label Text="{Binding BookSummary}" FontSize="14" />
+
+                <Border
+                    HeightRequest="205"
+                    StrokeShape="RoundRectangle 20"
+                    StrokeThickness="0"
+                    Padding="0"
+                    BackgroundColor="Transparent">
+                    <Grid HeightRequest="205">                    
+                        <Image Source="logo_sta.png" Aspect="AspectFill" />                    
+                            <BoxView Color="{StaticResource HeroOverlay}" />
+                        <VerticalStackLayout VerticalOptions="Center" Padding="20" Spacing="10">
+                            <Label Text="iSing" Style="{StaticResource HeroTitleLabel}" HorizontalTextAlignment="Start" />
+                            <Label Style="{StaticResource HeroTextLabel}"
+                                    Text="„Lobe den Herrn, meine Seele,&#10;und alles in mir seinen heiligen Namen!“" HorizontalTextAlignment="Start" />
+                            <Label Text="Psalm 103,1" Style="{StaticResource HeroCaptionLabel}" HorizontalTextAlignment="Start" />
+                        </VerticalStackLayout>                        
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" SemanticProperties.Description="Alle Lieder">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowSongsCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Label Grid.Column="0" Text="♫" Style="{StaticResource GlyphLabel}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Alle Lieder" Style="{StaticResource CardTitleLabel}" />
+                            <Label Text="{Binding SongSummary}" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" SemanticProperties.Description="Nach Liederbuch">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowBooksCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Label Grid.Column="0" Text="▤" Style="{StaticResource GlyphLabel}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Nach Liederbuch" Style="{StaticResource CardTitleLabel}" />
+                            <Label Text="Lieder eines einzelnen Buchs" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" SemanticProperties.Description="Nach Kategorien">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowCategoriesCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Label Grid.Column="0" Text="▦" Style="{StaticResource GlyphLabel}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Nach Kategorien" Style="{StaticResource CardTitleLabel}" />
+                            <Label Text="Themen aus allen Liederbüchern" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" SemanticProperties.Description="Favoriten">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowFavoritesCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Label Grid.Column="0" Text="♡" Style="{StaticResource GlyphLabel}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Favoriten" Style="{StaticResource CardTitleLabel}" />
+                            <Label Text="Meine gespeicherten Lieder" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" />
+                    </Grid>
+                </Border>
+
+                <Border Style="{StaticResource CardBorder}" SemanticProperties.Description="Letzte Lieder">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding ShowRecentCommand}" />
+                    </Border.GestureRecognizers>
+                    <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                        <Label Grid.Column="0" Text="◷" Style="{StaticResource GlyphLabel}" />
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
+                            <Label Text="Letzte Lieder" Style="{StaticResource CardTitleLabel}" />
+                            <Label Text="Schnell wiederfinden" Style="{StaticResource CaptionLabel}" />
+                        </VerticalStackLayout>
+                        <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" />
+                    </Grid>
+                </Border>
+
+                <Label Text="developed by AppVentist" FontSize="14" HorizontalOptions="Center" />
+
+            </VerticalStackLayout>
+        </ScrollView>
+
+    </views:PageStateView>
+
+</views:PageViewBase>

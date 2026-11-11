@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       x:Class="iSing.Views.LibraryShell"
+       FlyoutBehavior="Disabled"
+       Shell.TabBarForegroundColor="{StaticResource Brand}"
+       Shell.TabBarTitleColor="{StaticResource Brand}"
+       Shell.ForegroundColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource White}}"
+       Shell.TitleColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource White}}"
+       Shell.TabBarBackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}"
+       Shell.BackgroundColor="{AppThemeBinding Light={StaticResource PageBackgroundLight}, Dark={StaticResource PageBackgroundDark}}">
+
+    <TabBar>
+        <Tab Title="Start" Icon="home.png">
+            <ShellContent x:Name="HomeContent" Title="Start" />
+        </Tab>
+        <Tab Title="Lieder" Icon="songs.png">
+            <ShellContent x:Name="SongsContent" Title="Lieder" />
+        </Tab>
+        <Tab Title="Favoriten" Icon="heart.png">
+            <ShellContent x:Name="FavoritesContent" Title="Favoriten" />
+        </Tab>
+        <Tab Title="Mehr" Icon="more.png">
+            <ShellContent x:Name="SettingsContent" Title="Mehr" />
+        </Tab>
+    </TabBar>
+
+</Shell>

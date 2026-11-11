@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    x:Class="iSing.Views.SongPage"
+                    x:DataType="vm:SongDetailViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <Grid RowDefinitions="Auto,*,Auto" Padding="0,12,0,20" RowSpacing="16">
+
+            <VerticalStackLayout Grid.Row="0" Spacing="8" Padding="22,0">
+                <Border Style="{StaticResource BadgeBorder}">
+                    <Label Text="{Binding BookLabel}" Style="{StaticResource BadgeLabel}" />
+                </Border>
+                <Label Text="{Binding SongTitle}" Style="{StaticResource SongTitleLabel}" />
+                <Label Text="{Binding Category}" Style="{StaticResource SmallLabel}" />
+                <Button Text="{Binding FavoriteText}" Command="{Binding ToggleFavoriteCommand}" />
+            </VerticalStackLayout>
+
+            <CarouselView Grid.Row="1"
+                  ItemsSource="{Binding Verses}"
+                  IndicatorView="{x:Reference VerseIndicator}"
+                  Loop="False"
+                  PeekAreaInsets="22">
+                <CarouselView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal"
+                               SnapPointsType="MandatorySingle"
+                               SnapPointsAlignment="Center"
+                               ItemSpacing="10" />
+                </CarouselView.ItemsLayout>
+
+                <CarouselView.EmptyView>
+                    <Label Text="Für dieses Lied ist noch kein Text hinterlegt."
+                   Margin="22,0" />
+                </CarouselView.EmptyView>
+
+                <CarouselView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:VerseItem">
+                        <Border Style="{StaticResource CardBorder}">
+                            <ScrollView>
+                                <VerticalStackLayout Spacing="8">
+                                    <Label Text="{Binding Heading}" Style="{StaticResource VerseHeadingLabel}" />
+                                    <Label Text="{Binding Text}" FontSize="{Binding FontSize}"
+                           Style="{StaticResource VerseTextLabel}" />
+
+                                    <!-- Refrain unter der Strophe -->
+                                    <VerticalStackLayout IsVisible="{Binding HasRefrain}"
+                                         Margin="0,16,0,0" Spacing="8">
+                                        <Label Text="Refrain" Style="{StaticResource VerseHeadingLabel}" />
+                                        <Label Text="{Binding RefrainText}" FontSize="{Binding FontSize}"
+                               FontAttributes="Italic"
+                               Style="{StaticResource VerseTextLabel}" />
+                                    </VerticalStackLayout>
+                                </VerticalStackLayout>
+                            </ScrollView>
+                        </Border>
+                    </DataTemplate>
+                </CarouselView.ItemTemplate>
+            </CarouselView>
+
+            <IndicatorView x:Name="VerseIndicator" Grid.Row="2"
+                   HorizontalOptions="Center"
+                   IndicatorColor="LightGray"
+                   SelectedIndicatorColor="{StaticResource Brand}" />
+        </Grid>
+
+    </views:PageStateView>
+
+</views:PageViewBase>

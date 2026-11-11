@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<views:PageViewBase xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+                    xmlns:views="clr-namespace:iSing.Views"
+                    xmlns:vm="clr-namespace:iSing.ViewModels"
+                    x:Class="iSing.Views.SettingsPage"
+                    x:DataType="vm:SettingsViewModel"
+                    Style="{StaticResource AppPage}"
+                    Title="{Binding Title}">
+
+    <views:PageStateView IsBusy="{Binding IsBusy}"
+                         ErrorMessage="{Binding ErrorMessage}"
+                         IsContentVisible="{Binding IsContentVisible}"
+                         RetryCommand="{Binding InitializeCommand}">
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20" Spacing="14">
+
+                <Label Text="Liederbücher" Style="{StaticResource SectionLabel}" />
+
+                <!-- Aufklappbare Liederbuch-Karte: Kopfzeile antippen blendet die Liste ein/aus. -->
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="0">
+
+                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="12" BackgroundColor="Transparent">
+                            <Grid.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleBooksCommand}" />
+                            </Grid.GestureRecognizers>
+                            <VerticalStackLayout Spacing="4">
+                                <Label Text="Geladene Liederbücher" Style="{StaticResource CardTitleLabel}" />
+                                <Label Text="{Binding BooksSummary}" Style="{StaticResource SmallLabel}" />
+                            </VerticalStackLayout>
+                            <Label Grid.Column="1"
+                                   Text="›"
+                                   Style="{StaticResource ChevronLabel}"
+                                   VerticalOptions="Center"
+                                   Rotation="{Binding BooksChevronRotation}" />
+                        </Grid>
+
+                        <VerticalStackLayout IsVisible="{Binding IsBooksExpanded}"
+                                             Margin="0,12,0,0"
+                                             BindableLayout.ItemsSource="{Binding Books}">
+                            <BindableLayout.ItemTemplate>
+                                <DataTemplate x:DataType="vm:BookItem">
+                                    <VerticalStackLayout Spacing="4" Padding="0,10,0,0">
+                                        <BoxView HeightRequest="1"
+                                                 Margin="0,0,0,6"
+                                                 Color="{AppThemeBinding Light={StaticResource BadgeBackgroundLight}, Dark={StaticResource BadgeBackgroundDark}}" />
+                                        <Label Text="{Binding Label}" Style="{StaticResource ListTitleLabel}" />
+                                        <Label Text="{Binding Caption}" Style="{StaticResource SmallLabel}" />
+                                    </VerticalStackLayout>
+                                </DataTemplate>
+                            </BindableLayout.ItemTemplate>
+                        </VerticalStackLayout>
+
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Alle Liederbücher sind lokal gespeichert und offline verfügbar." FontSize="14" />
+                <Label Text="App Design" Style="{StaticResource SectionLabel}" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                    <Border Grid.Column="0" Style="{StaticResource CardBorder}">
+                        <Picker Title="Schriftgröße"
+                            ItemsSource="{Binding FontSizes}"
+                            SelectedIndex="{Binding FontSizeIndex, Mode=TwoWay}" />
+                    </Border>
+                    <Border Grid.Column="1" Style="{StaticResource CardBorder}">
+                        <Picker Title="Design"
+                            ItemsSource="{Binding Designs}"
+                            SelectedIndex="{Binding DesignIndex, Mode=TwoWay}" />
+                    </Border>
+                </Grid>                
+
+                <Label Text="AppVentist" Style="{StaticResource SectionLabel}" />
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Padding="24" Spacing="10">
+                        <Border StrokeShape="RoundRectangle 10" WidthRequest="245">
+                        <Image Source="logo_appventist_white.png"
+                            HeightRequest="80"
+                            Aspect="AspectFit" />
+                        </Border>
+                        <Label Text="AppVentist entwickelt digitale Tools. Sie stärken den Glauben, fördern Jüngerschaft und preisen Gott durch das ewige Evangelium – bis Jesus wiederkommt!"
+                            FontSize="14"
+                            HorizontalTextAlignment="Center" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Label Text="Über iSing" Style="{StaticResource SectionLabel}" />
+                <Border Style="{StaticResource CardBorder}">
+                    <VerticalStackLayout Spacing="0">
+                        <Label Text="Gemeinsam singen. Gott die Ehre geben." Style="{StaticResource CardTitleLabel}" HorizontalOptions="Center" />
+                        <Label Text="developed by AppVentist" FontSize="14" HorizontalOptions="Center" />
+                        <Label Text="{Binding VersionText}" FontSize="14" HorizontalOptions="Center" />                        
+                        <Label Text="{Binding CopyrightText}" FontSize="14" HorizontalOptions="Center" />
+                        <Label Text="" FontSize="14" HorizontalOptions="Center" />
+                    </VerticalStackLayout>
+                </Border>
+                
+            </VerticalStackLayout>
+        </ScrollView>
+    </views:PageStateView>
+</views:PageViewBase>

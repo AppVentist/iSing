@@ -1,0 +1,49 @@
+﻿{
+    "id":  "schritt_fuer_schritt",
+    "title":  "Schritt für Schritt",
+    "year":  2026,
+    "isDemo":  true,
+    "songs":  [
+                  {
+                      "number":  "001",
+                      "title":  "Gemeinsam singen",
+                      "categoryId":  "anbetung",
+                      "verses":  [
+                                     {
+                                         "number":  1,
+                                         "isRefrain":  false,
+                                         "text":  "Dies ist ein frei bearbeitbarer Beispieltext aus Liederbuch 3.\nHier stehen später die echten Strophen."
+                                     },
+                                     {
+                                         "number":  null,
+                                         "isRefrain":  true,
+                                         "text":  "Beispiel-Refrain: Gemeinsam singen wir.\nErsetze diesen Text durch deinen Liedinhalt."
+                                     }
+                                 ]
+                  },
+                  {
+                      "number":  "002",
+                      "title":  "Ein neuer Tag – Beispiel 3",
+                      "categoryId":  "anbetung",
+                      "verses":  [
+                                     {
+                                         "number":  1,
+                                         "isRefrain":  false,
+                                         "text":  "Demo-Lied mit derselben Nummer wie in anderen Büchern.\nFavoriten bleiben trotzdem eindeutig zugeordnet."
+                                     }
+                                 ]
+                  },
+                  {
+                      "number":  "003",
+                      "title":  "Ein Lied der Hoffnung – Beispiel 3",
+                      "categoryId":  "vertrauen",
+                      "verses":  [
+                                     {
+                                         "number":  1,
+                                         "isRefrain":  false,
+                                         "text":  "Platzhalter für ein weiteres Lied.\nTitel, Kategorie und Strophen können frei angepasst werden."
+                                     }
+                                 ]
+                  }
+              ]
+}
