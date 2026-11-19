@@ -1,8 +1,24 @@
-﻿using iSing.Models;
+using iSing.Models;
 using iSing.Services;
 namespace iSing.ViewModels;
 
-public sealed record VerseItem(string Heading, string Text, double FontSize);
+public sealed class VerseItem
+{
+    public VerseItem(string heading, string text, double fontSize, string? refrainText = null)
+    {
+        Heading = heading;
+        Text = text;
+        FontSize = fontSize;
+        RefrainText = refrainText;
+    }
+
+    public string Heading { get; }
+    public string Text { get; }
+    public double FontSize { get; }
+    public string? RefrainText { get; set; }
+    public bool HasRefrain => !string.IsNullOrEmpty(RefrainText);
+}
+
 public sealed class SongDetailViewModel : PageViewModel
 {
     Song song;
@@ -35,22 +51,6 @@ public sealed class SongDetailViewModel : PageViewModel
         NextCommand = new(_ => GoTo(index + 1));
     }
 
-    public class VerseItem
-    {
-        public VerseItem(string heading, string text, double fontSize, string? refrainText = null)
-        {
-            Heading = heading;
-            Text = text;
-            FontSize = fontSize;
-            RefrainText = refrainText;
-        }
-
-        public string Heading { get; }
-        public string Text { get; }
-        public double FontSize { get; }
-        public string? RefrainText { get; set; }
-        public bool HasRefrain => !string.IsNullOrEmpty(RefrainText);
-    }
     // Blättert innerhalb des gleichen Liederbuchs zum Nachbarlied.
     void GoTo(int newIndex)
     {
