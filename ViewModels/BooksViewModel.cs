@@ -1,7 +1,8 @@
+using System.Text.RegularExpressions;
 using iSing.Services;
 namespace iSing.ViewModels;
 
-public sealed record BookListItem(string Id, string Label, string Caption);
+public sealed record BookListItem(string Id, string Label, string Caption, string Cover);
 public sealed class BooksViewModel : PageViewModel
 {
     IReadOnlyList<BookListItem> books = [];
@@ -19,8 +20,11 @@ public sealed class BooksViewModel : PageViewModel
             await navigation.ShowSongsAsync(new(book.Label, BookId: book.Id));
         }, ShowError);
     }
+    // Cover liegt als Resources/Images/cover_<buch-id>.svg|png (kleingeschrieben, Sonderzeichen werden zu "_").
+    static string CoverFor(string bookId) => "cover_" + Regex.Replace(bookId.ToLowerInvariant(), "[^a-z0-9_]", "_");
     protected override void Refresh() => Books = Library.Books
         .Select(book => new BookListItem(book.Id, book.Label,
-            $"{book.Year} · {book.Songs.Count} {(book.Songs.Count == 1 ? "Lied" : "Lieder")}"))
+            $"{book.Year} · {book.Songs.Count} {(book.Songs.Count == 1 ? "Lied" : "Lieder")}",
+            CoverFor(book.Id)))
         .ToList();
 }

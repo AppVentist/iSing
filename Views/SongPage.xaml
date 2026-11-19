@@ -19,9 +19,29 @@
                 <Border Style="{StaticResource BadgeBorder}">
                     <Label Text="{Binding BookLabel}" Style="{StaticResource BadgeLabel}" />
                 </Border>
-                <Label Text="{Binding SongTitle}" Style="{StaticResource SongTitleLabel}" />
+                <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                    <Label Grid.Column="0" Text="{Binding SongTitle}"
+                           Style="{StaticResource SongTitleLabel}" VerticalOptions="Center" />
+                    <Button Grid.Column="1" Text="{Binding FavoriteGlyph}"
+                            Command="{Binding ToggleFavoriteCommand}"
+                            Style="{StaticResource FavoriteButton}"
+                            SemanticProperties.Description="Favorit umschalten">
+                        <Button.Triggers>
+                            <DataTrigger TargetType="Button" Binding="{Binding IsFavorite}" Value="True">
+                                <Setter Property="TextColor" Value="#E53935" />
+                            </DataTrigger>
+                        </Button.Triggers>
+                    </Button>
+                </Grid>
                 <Label Text="{Binding Category}" Style="{StaticResource SmallLabel}" />
-                <Button Text="{Binding FavoriteText}" Command="{Binding ToggleFavoriteCommand}" />
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="12" Margin="0,4,0,0">
+                    <Button Grid.Column="0" Text="&lt; Vorheriger Song"
+                            Command="{Binding PreviousCommand}" IsEnabled="{Binding CanGoPrevious}"
+                            Style="{StaticResource NavButton}" />
+                    <Button Grid.Column="1" Text="Nächster Song >"
+                            Command="{Binding NextCommand}" IsEnabled="{Binding CanGoNext}"
+                            Style="{StaticResource NavButton}" />
+                </Grid>
             </VerticalStackLayout>
 
             <CarouselView Grid.Row="1"

@@ -100,9 +100,9 @@ Check(favoriteList.Songs.Count == 0, "Favoritenliste aktualisiert sich beim Wied
 var detail = new SongDetailViewModel(library, settings, demo);
 await detail.InitializeAsync();
 var favoriteChanged = false;
-detail.PropertyChanged += (_, e) => favoriteChanged |= e.PropertyName == nameof(SongDetailViewModel.FavoriteText);
+detail.PropertyChanged += (_, e) => favoriteChanged |= e.PropertyName == nameof(SongDetailViewModel.FavoriteGlyph);
 detail.ToggleFavoriteCommand.Execute(null);
-Check(detail.IsFavorite && favoriteChanged && detail.FavoriteText.Contains("entfernen"), "Detail-Command aktualisiert Favoritenzustand und Button-Binding");
+Check(detail.IsFavorite && favoriteChanged && detail.FavoriteGlyph == "♥", "Detail-Command aktualisiert Favoritenzustand und Button-Binding");
 Check(!library.Favorites.Contains(song.Key), "Detail-Command lässt gleich nummeriertes Lied eines anderen Buchs unverändert");
 library.Visit(song);
 library.Visit(demo);

@@ -5,26 +5,34 @@ namespace iSing.ViewModels;
 public sealed record VerseItem(string Heading, string Text, double FontSize);
 public sealed class SongDetailViewModel : PageViewModel
 {
-    readonly Song song;
+    Song song;
+    List<Song> bookSongs = [];
+    int index = -1;
     readonly ISettingsService settings;
     IReadOnlyList<VerseItem> verses = [];
     public string SongTitle => song.Title;
     public string BookLabel => song.BookLabel;
     public string Category => song.CategoryName;
     public bool IsFavorite => Library.Favorites.Contains(song.Key);
-    public string FavoriteText => IsFavorite ? "♥  Aus Favoriten entfernen" : "♡  Als Favorit speichern";
+    public string FavoriteGlyph => IsFavorite ? "♥" : "♡";
+    public bool CanGoPrevious => index > 0;
+    public bool CanGoNext => index >= 0 && index < bookSongs.Count - 1;
     public IReadOnlyList<VerseItem> Verses { get => verses; private set => Set(ref verses, value); }
     public bool HasNoVerses => Verses.Count == 0;
     public RelayCommand ToggleFavoriteCommand { get; }
+    public RelayCommand PreviousCommand { get; }
+    public RelayCommand NextCommand { get; }
     public SongDetailViewModel(ILibraryService library, ISettingsService settings, Song song) : base($"Lied {song.Number}", library)
     {
         this.song = song;
         this.settings = settings;
         ToggleFavoriteCommand = new(_ =>
         {
-            try { Library.Toggle(song); Notify(nameof(IsFavorite)); Notify(nameof(FavoriteText)); }
+            try { Library.Toggle(this.song); Notify(nameof(IsFavorite)); Notify(nameof(FavoriteGlyph)); }
             catch (Exception ex) { ShowError(ex); }
         });
+        PreviousCommand = new(_ => GoTo(index - 1));
+        NextCommand = new(_ => GoTo(index + 1));
     }
 
     public class VerseItem
@@ -43,8 +51,19 @@ public sealed class SongDetailViewModel : PageViewModel
         public string? RefrainText { get; set; }
         public bool HasRefrain => !string.IsNullOrEmpty(RefrainText);
     }
+    // Blättert innerhalb des gleichen Liederbuchs zum Nachbarlied.
+    void GoTo(int newIndex)
+    {
+        if (newIndex < 0 || newIndex >= bookSongs.Count) return;
+        song = bookSongs[newIndex];
+        Library.Visit(song);
+        Title = $"Lied {song.Number}";
+        Refresh();
+    }
     protected override void Refresh()
     {
+        bookSongs = Library.Songs.Where(s => s.BookId == song.BookId).ToList();
+        index = bookSongs.IndexOf(song);
         var items = new List<VerseItem>();
         Verse? refrain = null;
 
@@ -67,7 +86,12 @@ public sealed class SongDetailViewModel : PageViewModel
 
         Verses = items;
         Notify(nameof(HasNoVerses));
+        Notify(nameof(SongTitle));
+        Notify(nameof(BookLabel));
+        Notify(nameof(Category));
         Notify(nameof(IsFavorite));
-        Notify(nameof(FavoriteText));
+        Notify(nameof(FavoriteGlyph));
+        Notify(nameof(CanGoPrevious));
+        Notify(nameof(CanGoNext));
     }
 }

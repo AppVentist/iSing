@@ -4,7 +4,8 @@ namespace iSing.ViewModels;
 public abstract class PageViewModel : ObservableObject
 {
     protected ILibraryService Library { get; }
-    public string Title { get; }
+    string title = "";
+    public string Title { get => title; protected set => Set(ref title, value); }
     bool busy, ready;
     string error = "";
     public bool IsBusy { get => busy; private set { if (Set(ref busy, value)) Notify(nameof(IsContentVisible)); } }

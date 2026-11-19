@@ -23,12 +23,15 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate x:DataType="vm:BookListItem">
                     <Border Style="{StaticResource ListCardBorder}">
-                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="16">
-                            <VerticalStackLayout Grid.Column="0" Spacing="6">
+                        <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="16">
+                            <Image Grid.Column="0" Source="{Binding Cover}"
+                                   WidthRequest="44" HeightRequest="44"
+                                   Aspect="AspectFit" VerticalOptions="Center" />
+                            <VerticalStackLayout Grid.Column="1" Spacing="6" VerticalOptions="Center">
                                 <Label Text="{Binding Label}" Style="{StaticResource CardTitleLabel}" />
                                 <Label Text="{Binding Caption}" Style="{StaticResource SmallLabel}" />
                             </VerticalStackLayout>
-                            <Label Grid.Column="1" Text="›" Style="{StaticResource ChevronLabel}" VerticalOptions="Center" />
+                            <Label Grid.Column="2" Text="›" Style="{StaticResource ChevronLabel}" VerticalOptions="Center" />
                         </Grid>
                     </Border>
                 </DataTemplate>

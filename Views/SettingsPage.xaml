@@ -88,7 +88,7 @@
                 <Label Text="Über iSing" Style="{StaticResource SectionLabel}" />
                 <Border Style="{StaticResource CardBorder}">
                     <VerticalStackLayout Spacing="0">
-                        <Label Text="Gemeinsam singen. Gott die Ehre geben." Style="{StaticResource CardTitleLabel}" HorizontalOptions="Center" />
+                        <Label Text="Gemeinsam singen. Gott loben." Style="{StaticResource CardTitleLabel}" HorizontalOptions="Center" />
                         <Label Text="developed by AppVentist" FontSize="14" HorizontalOptions="Center" />
                         <Label Text="{Binding VersionText}" FontSize="14" HorizontalOptions="Center" />                        
                         <Label Text="{Binding CopyrightText}" FontSize="14" HorizontalOptions="Center" />
